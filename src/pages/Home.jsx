@@ -11,11 +11,22 @@ import { useTheme as useSystemTheme } from '@mui/system';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import DevicesIcon from '@mui/icons-material/Devices';
 import SpeedIcon from '@mui/icons-material/Speed';
+import { useNavigate } from 'react-router-dom';
 
-function Home() {
+function Home({ isLoggedIn }) {
     const theme = useTheme();
     const systemTheme = useSystemTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const navigate = useNavigate();
+
+    const handleStartNowClick = () => {
+        if (isLoggedIn) {
+            navigate('/task');
+        } else {
+            navigate('/login');
+        }
+    };
+
 
     return (
         <Box sx={{
@@ -38,7 +49,12 @@ function Home() {
                             <Typography variant="h6" paragraph>
                                 Organize your tasks, boost your productivity, and achieve your goals with our intuitive task manager app.
                             </Typography>
-                            <Button variant="contained" size="large" sx={{ mt: 2 }}>
+                            <Button
+                                variant="contained"
+                                size="large"
+                                sx={{ mt: 2 }}
+                                onClick={handleStartNowClick}
+                            >
                                 Get Started
                             </Button>
                         </Grid>
@@ -100,8 +116,13 @@ function Home() {
                     <Typography variant="h6" paragraph>
                         Download our task manager app today and take control of your tasks and time.
                     </Typography>
-                    <Button variant="contained" size="large" sx={{ mt: 2, backgroundColor: 'white', color: 'primary.main' }}>
-                        Download Now
+                    <Button
+                        variant="contained"
+                        size="large"
+                        sx={{ mt: 2, backgroundColor: 'white', color: 'primary.main' }}
+                        onClick={handleStartNowClick}
+                    >
+                        Start Now!
                     </Button>
                 </Container>
             </Box>

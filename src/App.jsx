@@ -55,7 +55,7 @@ function App() {
             <Router>
                 <Navbar mode={mode} toggleColorMode={colorMode.toggleColorMode} isLoggedIn={isLoggedIn} />
                 <Routes>
-                    <Route path="/" element={<Home />} />
+                    <Route path="/" element={<Home isLoggedIn={isLoggedIn} />} />
                     <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login />} />
                     <Route path="/register" element={isLoggedIn ? <Navigate to="/" /> : <Register />} />
                     <Route path="/profile" element={isLoggedIn ? <Profile /> : <Navigate to="/login" />} />

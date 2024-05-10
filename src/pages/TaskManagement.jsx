@@ -23,31 +23,43 @@ import AddIcon from '@mui/icons-material/Add';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Root = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
+
+const Root = styled.div`
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px;
 `;
 
-const TaskInput = styled(Box)`
-  display: flex;
-  align-items: center;
-  margin-bottom: 1rem;
+const TaskInput = styled.div`
+    display: flex;
+    margin-bottom: 16px;
 `;
 
 const TaskList = styled(List)`
-  width: 100%;
-  max-width: 600px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    padding: 8px;
 `;
 
-const AddTaskButton = styled(Button)`
-  margin-top: 2rem;
+const TaskItem = styled(ListItem)`
+    background-color: #ffffff;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+    }
 `;
 
-const LoadingIndicator = styled(CircularProgress)`
-  margin-top: 2rem;
+const CircularLoading = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
 `;
+
 
 
 const TaskManagement = () => {
@@ -167,29 +179,34 @@ const TaskManagement = () => {
                     value={newTaskName}
                     onChange={(e) => setNewTaskName(e.target.value)}
                     fullWidth
+                    InputProps={{
+                        endAdornment: (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleCreateTask}
+                                disabled={!newTaskName}
+                            >
+                                <AddIcon />
+                            </Button>
+                        ),
+                    }}
                 />
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleCreateTask}
-                    disabled={!newTaskName}
-                    style={{ marginLeft: '8px' }}
-                >
-                    Add Task
-                </Button>
             </TaskInput>
             {loading ? (
                 isLoadingTimeout ? (
                     <Alert severity="warning">Loading is taking longer than expected. Please wait...</Alert>
                 ) : (
-                    <LoadingIndicator />
+                    <CircularLoading>
+                        <CircularProgress />
+                    </CircularLoading>
                 )
             ) : error ? (
                 <Alert severity="error">{errorMessage || 'An error occurred. Please try again later.'}</Alert>
             ) : data.tasks.length > 0 ? (
                 <TaskList>
                     {data.tasks.map((task) => (
-                        <ListItem key={task.id} dense>
+                        <TaskItem key={task.id}>
                             <ListItemText
                                 primary={
                                     editTaskId === task.id ? (
@@ -228,7 +245,7 @@ const TaskManagement = () => {
                                     onChange={() => handleUpdateTask(task.id, task.name, !task.complete)}
                                 />
                             </ListItemSecondaryAction>
-                        </ListItem>
+                        </TaskItem>
                     ))}
                 </TaskList>
             ) : (
